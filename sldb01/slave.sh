@@ -1,0 +1,3 @@
+STOP SLAVE;
+CHANGE MASTER TO MASTER_HOST='master.mysqlrepl_mysqlRepl',MASTER_USER='slave_user', MASTER_PASSWORD='slave_user', MASTER_LOG_FILE='mysql-bin.000002', MASTER_LOG_POS=2942;
+START SLAVE;

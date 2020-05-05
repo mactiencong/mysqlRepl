@@ -1,0 +1,45 @@
+version: "3"
+services:
+    sldb01:
+        container_name: sldb01
+        build:
+            context: ./sldb01
+        volumes:
+            - ./sldb01/log:/var/log/mysql
+        command:
+            - '--character-set-server=utf8mb4'
+        environment:
+            MYSQL_ROOT_PASSWORD: sldb01
+        networks:
+            - mysqlRepl
+    sldb02:
+        container_name: sldb02
+        build:
+            context: ./sldb02
+        command:
+            - '--character-set-server=utf8mb4'    
+        volumes:
+            - ./sldb02/log:/var/log/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: sldb02
+        networks:
+            - mysqlRepl
+    master:
+        container_name: master
+        build:
+            context: ./master
+        command:
+            - '--character-set-server=utf8mb4'
+        volumes:
+            - ./master/log:/var/log/mysql
+        networks:
+            - mysqlRepl
+        ports:
+            - "3307:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: master
+        depends_on:
+            - sldb01
+            - sldb02
+networks:
+    mysqlRepl:
